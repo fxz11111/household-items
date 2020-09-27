@@ -5,18 +5,18 @@
         <i class="el-icon-search"></i>
         <span>筛选搜索</span>
         <el-button style="float: right" type="primary" size="small">查询结果</el-button>
-        <el-button style="float: right;margin-right: 15px" size="small">重置</el-button>
+        <el-button style="float: right;margin-right: 15px" size="small" @click="reset_user_search('userSearch')">重置</el-button>
       </div>
       <div style="margin-top: 30px">
         <el-form :inline="true">
-          <el-form-item label="输入搜索：">
-            <el-input v-model="userName" style="width: 203px" placeholder="用户名称"></el-input>
+          <el-form-item label="输入搜索：" v-model="userSearch" ref="userSearch">
+            <el-input v-model="userSearch.userName" style="width: 203px" placeholder="用户名称"></el-input>
           </el-form-item>
           <el-form-item label="用户uuid：" style="margin-left: 10px">
-            <el-input v-model="userId" style="width: 203px" placeholder="用户uuid"></el-input>
+            <el-input v-model="userSearch.userId" style="width: 203px" placeholder="用户uuid"></el-input>
           </el-form-item>
           <el-form-item label="手机号码：" style="margin-left: 10px">
-            <el-input v-model="phoneNum" style="width: 203px" placeholder="手机号"></el-input>
+            <el-input v-model="userSearch.phoneNum" style="width: 203px" placeholder="手机号"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -43,13 +43,21 @@
         <el-table-column prop="jifen" label="积分" width="100" align="center"></el-table-column>
         <el-table-column prop="time" label="创建时间" width="100" align="center"></el-table-column>
         <el-table-column label="操作" width="160" align="center">
-          <el-button type="primary" size="mini">编辑</el-button>
+          <el-button type="primary" size="mini" @click="edit_user_info = true">编辑</el-button>
         </el-table-column>
       </el-table>
     </div>
     <div class="pagination-container">
       <!-- <el-pagination background layout="prev, pager, next"></el-pagination> -->
     </div>
+
+    <el-dialog title="用户基本信息"  :visible.sync="edit_user_info" :before-close="handleClose">
+      <h2>内容</h2>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="edit_userInfo">取 消</el-button>
+        <el-button type="primary" @click="edit_userInfo">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -57,9 +65,11 @@
 export default {
   data() {
     return {
-      userName: '',
-      userId: '',
-      phoneNum: '',
+      userSearch: {
+        userName: '',
+        userId: '',
+        phoneNum: ''
+      },
       list: [
         {
           id: 1,
@@ -103,7 +113,25 @@ export default {
           youhui: '满一千减三、满五百减五十',
           time: '2020.09.12'
         }
-      ]
+      ],
+      edit_user_info: false
+    }
+  },
+  methods: {
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done()
+        })
+        .catch(_ => {})
+    },
+    reset_user_search(userSearch) {
+      this.userSearch.userName = '',
+      this.userSearch.userId = '',
+      this.userSearch.phoneNum = ''
+    },
+    edit_userInfo() {
+      this.edit_user_info = false
     }
   }
 }

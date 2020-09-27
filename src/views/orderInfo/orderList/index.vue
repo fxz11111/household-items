@@ -5,18 +5,18 @@
         <i class="el-icon-search"></i>
         <span>筛选搜查</span>
         <el-button style="float: right" type="primary" size="small">查询结果</el-button>
-        <el-button style="float: right; margin-right: 15px" size="small">重置</el-button>
+        <el-button style="float: right; margin-right: 15px" size="small" @click="resetForm('orderSearch')">重置</el-button>
       </div>
       <div style="margin-top: 30px">
-        <el-form :inline="true" size="small">
-          <el-form-item label="输入搜索：">
-            <el-input v-model="orderId" style="width: 203px" placeholder="订单编号"></el-input>
+        <el-form :inline="true" size="small" v-model="orderSearch" ref="orderSearch">
+          <el-form-item label="输入搜索：" prop="orderId">
+            <el-input v-model="orderSearch.orderId" style="width: 203px" placeholder="订单编号"></el-input>
           </el-form-item>
-          <el-form-item label="用户ID：" style="margin-left: 10px">
-            <el-input v-model="order_user_id" style="width: 203px" placeholder="用户ID"></el-input>
+          <el-form-item label="用户ID：" style="margin-left: 10px" prop="userId">
+            <el-input v-model="orderSearch.userId" style="width: 203px" placeholder="用户ID"></el-input>
           </el-form-item>
-          <el-form-item label="下单时间：" style="margin-left: 10px">
-            <el-input v-model="orderTime" style="width: 203px" placeholder="下单时间"></el-input>
+          <el-form-item label="下单时间：" style="margin-left: 10px" prop="orderTime">
+            <el-input v-model="orderSearch.orderTime" style="width: 203px" placeholder="下单时间"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -37,7 +37,7 @@
         <el-table-column prop="zhuangtai" label="订单状态" width="100" align="center"></el-table-column>
         <el-table-column prop="yundan" label="运单编号" width="200" align="center"></el-table-column>
         <el-table-column label="操作" width="250" align="center">
-          <el-button size="mini">查看订单详情</el-button>
+          <el-button size="mini">修改订单</el-button>
           <el-button type="danger" size="mini">删除订单</el-button>
         </el-table-column>
       </el-table>
@@ -49,9 +49,11 @@
 export default {
   data() {
     return {
-      orderId: '',
-      order_user_id: '',
-      orderTime: '',
+      orderSearch: {
+        orderId: '',
+        userId: '',
+        orderTime: ''
+      },
       orderList: [
         {
           id: 1,
@@ -65,6 +67,13 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    resetForm(orderSearch) {
+      this.orderSearch.orderId = '';
+      this.orderSearch.userId = '';
+      this.orderSearch.orderTime = '';
+    }
   },
 };
 </script>

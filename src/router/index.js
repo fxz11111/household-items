@@ -55,9 +55,6 @@ export const constantRoutes = [
     }]
   },
 
-]
-
-export const asyncRouterMap = [
   {
     path: '/userInfo',
     component: Layout,
@@ -91,7 +88,10 @@ export const asyncRouterMap = [
         meta: { title: '商品列表', icon: 'product-list' }
       },
       {
-        path: '',
+        path: 'addGood',
+        name: 'addGood',
+        component: () => import('@/views/goodInfo/addGood/index.vue'),
+        meta: { title: '新增商品', icon: 'good_add' }
       }
     ]
   },
@@ -130,6 +130,80 @@ export const asyncRouterMap = [
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
+
+// export const asyncRouterMap = [
+//   {
+//     path: '/userInfo',
+//     component: Layout,
+//     name: 'userInfo',
+//     redirect: '/userInfo/userList',
+//     meta: { title: '用户信息', icon: 'el-icon-s-help' },
+//     children: [
+//       {
+//         path: 'userList',
+//         name: 'userList',
+//         component: () => import('@/views/userInfo/userList/index.vue'),
+//         meta: { title: '用户列表', icon: 'product-list' }
+//       },
+//       {
+//         path: '',
+//       }
+//     ]
+//   },
+
+//   {
+//     path: '/goodInfo',
+//     component: Layout,
+//     name: 'goodInfo',
+//     redirect: '/goodInfo/goodList',
+//     meta: { title: '商品管理', icon: 'product' },
+//     children: [
+//       {
+//         path: 'goodList',
+//         name: 'goodList',
+//         component: () => import('@/views/goodInfo/goodList/index.vue'),
+//         meta: { title: '商品列表', icon: 'product-list' }
+//       },
+//       {
+//         path: '',
+//       }
+//     ]
+//   },
+
+//   {
+//     path: '/orderInfo',
+//     component: Layout,
+//     name: 'orderInfo',
+//     meta: { title: '订单管理', icon: 'order' },
+//     children: [
+//       {
+//         path: 'orderList',
+//         name: 'orderList',
+//         component: () => import('@/views/orderInfo/orderList/index.vue'),
+//         meta: { title: '订单列表', icon: 'product-list' }
+//       },
+//       {
+//         path: '',
+//       }
+//     ]
+//   },
+
+//   {
+//     path: '/cust-service',
+//     component: Layout,
+//     children: [
+//       {
+//         path: 'index',
+//         name: 'Cust-service',
+//         component: () => import('@/views/cust-service/index.vue'),
+//         meta: { title: '客服管理', icon: 'eye-open' }
+//       }
+//     ]
+//   },
+
+//   // 404 page must be placed at the end !!!
+//   { path: '*', redirect: '/404', hidden: true }
+// ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
