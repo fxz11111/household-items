@@ -83,3 +83,8 @@ service.interceptors.response.use(
 )
 
 export default service
+
+export const serve = axios.create({
+  baseURL: 'https://www.sngblog.cn:7147/api',
+  timeout: 5000
+})
