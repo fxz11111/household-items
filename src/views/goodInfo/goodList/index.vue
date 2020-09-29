@@ -33,39 +33,39 @@
         <el-table-column type="selection" width="60" align="center"></el-table-column>
         <el-table-column prop="id" label="序号" width="60" align="center"></el-table-column>
         <el-table-column prop="type_one" label="商品类别" width="120" align="center"></el-table-column>
-        <el-table-column prop="name" label="商品名称" width="120" align="center"></el-table-column>
+        <el-table-column prop="title" label="商品名称" width="120" align="center"></el-table-column>
         <el-table-column prop="price" label="商品库存" width="120" align="center"></el-table-column>
-        <el-table-column prop="price" label="商品价格" width="100" align="center"></el-table-column>
-        <el-table-column prop="introduction" label="商品简介" width="200" align="center"></el-table-column>
-        <el-table-column prop="size" label="商品尺寸" width="120" align="center"></el-table-column>
-        <el-table-column prop="color" label="商品颜色" width="120" align="center"></el-table-column>
+        <el-table-column label="商品价格" width="100" align="center"></el-table-column>
+        <el-table-column prop="introduce" label="商品简介" width="200" align="center"></el-table-column>
+        <el-table-column  label="商品尺寸" width="120" align="center"></el-table-column>
+        <el-table-column  label="商品颜色" width="120" align="center"></el-table-column>
         <el-table-column label="操作" width="250" align="center">
-          <el-button size="mini" @click="modify_product = true">修改属性</el-button>
-          <el-button type="danger" size="mini" @click="delete_goods = true">删除商品</el-button>
+          <template slot-scope="scope">
+            <el-button size="mini" @click="modify_product(scope.$index,scope.row)">修改属性</el-button>
+            <el-button type="danger" size="mini" @click="delete_goods(scope.$index,scope.row)">删除商品</el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>
 
-    <el-dialog title="修改商品属性"  :visible.sync="modify_product" :before-close="handleClose">
-      <h2>内容</h2>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="modify_product_attributes">取 消</el-button>
-        <el-button type="primary" @click="modify_product_attributes">确认修改</el-button>
-      </span>
-    </el-dialog>
+    <!-- 修改商品详情弹窗 -->
+    <el-alterDetail :editGoodDetail="editGoodDetail" @onHiddenDetail="hiddenDetail"></el-alterDetail>
 
-    <el-dialog title="删除商品" :visible.sync="delete_goods" :before-close="handleClose">
-      <span>确定要删除该商品吗？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="delete_goods_event">取消</el-button>
-        <el-button type="primary" @click="delete_goods_event">确定</el-button>
-      </span>
-    </el-dialog>
+    <!-- 删除商品 -->
+    <el-delGood :delProductInfo="delProductInfo" @onDelGood="deleteGood"></el-delGood>
   </div>
 </template>
 
 <script>
+import { getGoodInfo } from '../../../api/getGoodList'
+import ElAlterDetail from './alterDetail'
+import ElDelGood from './delGood'
+
 export default {
+  components: {
+    ElAlterDetail,
+    ElDelGood
+  },
   data() {
     return {
       goodSearch: {
@@ -73,22 +73,29 @@ export default {
         goodType: '',
         goodId: '',
       },
-      goodList: [
-        {
-          id: 1,
-          type_one: '沙发',
-          name: '真皮沙发',
-          price: '3000',
-          introduction: '正品手感好',
-          size: '12*20',
-          color: '黑色'
-        }
-      ],
-      modify_product: false,
-      delete_goods: false
+      goodList: [],
+      editGoodDetail: false,
+      delProductInfo: false,
+      page: 1
     }
   },
+  mounted() {
+    this.getGoodlist();
+  },
   methods: {
+    getGoodlist() {
+      this.goodList = [];
+      getGoodInfo({
+        page: this.page
+      })
+        .then((data) => {
+          const res = data.data.data;
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
     handleClose(done) {
       this.$confirm('确认关闭？')
         .then(_ => {
@@ -107,14 +114,20 @@ export default {
       this.$router.push({path: '/goodInfo/addGood'})
     },
     // 修改属性按钮
-    modify_product_attributes() {
-      this.modify_product = false;
+    modify_product() {
+      this.editGoodDetail = true;
+    },
+    hiddenDetail(flag) {
+      this.editGoodDetail = flag;
     },
     // 删除商品按钮
-    delete_goods_event() {    
-      this.delete_goods = false
+    delete_goods() {    
+      this.delProductInfo = true;
+    },
+    deleteGood(flag) {
+      this.delProductInfo = flag
     }
-  },
+  }
 };
 </script>
 

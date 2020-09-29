@@ -4,7 +4,7 @@
       <div>
         <i class="el-icon-search"></i>
         <span>筛选搜索</span>
-        <el-button style="float: right" type="primary" size="small"
+        <el-button style="float: right" type="primary" size="small" @click="search_user_result"
           >查询结果</el-button
         >
         <el-button
@@ -18,6 +18,7 @@
         <el-form :inline="true">
           <el-form-item
             label="输入搜索："
+            prop="userName"
             v-model="userSearch"
             ref="userSearch"
           >
@@ -27,16 +28,16 @@
               placeholder="用户名称"
             ></el-input>
           </el-form-item>
-          <el-form-item label="用户uuid：" style="margin-left: 10px">
+          <el-form-item label="用户uuid：" style="margin-left: 10px" prop="userId">
             <el-input
               v-model="userSearch.userId"
               style="width: 203px"
               placeholder="用户uuid"
             ></el-input>
           </el-form-item>
-          <el-form-item label="邮箱地址：" style="margin-left: 10px">
+          <el-form-item label="邮箱地址：" style="margin-left: 10px" prop="emailAddress">
             <el-input
-              v-model="userSearch.phoneNum"
+              v-model="userSearch.emailAddress"
               style="width: 203px"
               placeholder="邮箱地址"
             ></el-input>
@@ -152,14 +153,14 @@ export default {
   data() {
     return {
       userSearch: {
-        userName: "",
-        userId: "",
-        phoneNum: "",
+        userName: '',
+        userId: '',
+        emailAddress: '',
       },
       list: null,
       editUserInfo: false,
       page: 2,
-      userItem: {}
+      userItem: {},
     };
   },
   mounted() {
@@ -167,9 +168,9 @@ export default {
   },
   methods: {
     reset_user_search(userSearch) {
-      (this.userSearch.userName = ""),
-      (this.userSearch.userId = ""),
-      (this.userSearch.phoneNum = "");
+      this.userSearch.userName = '',
+      this.userSearch.userId = '',
+      this.userSearch.emailAddress = '';
     },
     haddleUserDetail(index,row) {
       // console.log(index,row)
@@ -197,7 +198,14 @@ export default {
           });
         });
     },
-  },
+    search_user_result() {
+      const searchName = this.userSearch.userName;
+      const searchId = this.userSearch.userId;
+      const searchEmail = this.userSearch.emailAddress;
+      console.log(searchName,searchId,searchEmail);
+      
+    }
+  }
 };
 </script>
 

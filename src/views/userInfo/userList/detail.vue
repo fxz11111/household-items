@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title="用户基本信息" :visible="editUserInfo || flag" :before-close="handleClose">
+    <el-dialog title="用户基本信息(仅能修改密码)" :visible="editUserInfo || flag" :before-close="handleClose">
       <div>
         <div>
           <span>用户名称：</span>
@@ -45,6 +45,7 @@ export default {
   data() {
     return {
       flag: false,
+      newPassword: null
     };
   },
   methods: {
@@ -64,8 +65,9 @@ export default {
     haddleSure() {
       this.$emit("onHidden", false);
     },
-    changePsd() {
-      console.log('=======');
+    changePsd(e) {
+      this.newPassword = e.target.value;
+      // console.log(this.newPassword);
     }
   },
 };
